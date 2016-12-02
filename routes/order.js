@@ -11,6 +11,7 @@ var DATE =  new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-" + n
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   SESSIONID = req.query.sessionId||SESSIONID;
+  console.log("SESSIONID:" +SESSIONID);
 
   /*var options = {
     url: 'http://b.keruyun.com/mind/tradeManage/queryList?pageSize=100',
@@ -38,7 +39,7 @@ router.get('/', function(req, res, next) {
       'Accept':  'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
       'Accept-Encoding': 'gzip, deflate, sdch',
       'Accept-Language': 'zh-CN,zh;q=0.8,en;q=0.6',
-      'Cookie':"JSESSIONID="+ req.query.sessionId||SESSIONID+";",
+      'Cookie':"JSESSIONID="+ (req.query.sessionId||SESSIONID)+";",
       'Host': 'b.keruyun.com',
       'Pragma':'no-cache',
       'Upgrade-Insecure-Requests':1,

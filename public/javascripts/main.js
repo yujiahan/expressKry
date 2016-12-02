@@ -14,10 +14,6 @@ $(function(){
             "end": "11:59:59"
         },
         {
-            "start": "11:40:00",
-            "end": "11:59:59"
-        },
-        {
             "start": "12:00:00",
             "end": "12:19:59"
         },
@@ -46,23 +42,45 @@ $(function(){
     ]
 
     //生成优惠分布数组
-    for(var i = 0; i < TIMEZONE.length; i++){
-        finalDistribute.push({
-            count:0,
-            discount:""
-        })
-    }
-   $("#getOrderList").click(function(){
-       $.get("/getOrderList?sessionId="+ $(":input#sessionId").val() + "&date="+ $("#date").val(), function(result){
+    function distributeInit(){
+        finalDistribute = [];
 
-           /*$("#result").val(
-               finalDistribute
-           );*/
-           debugger;
+        for(var i = 0; i < TIMEZONE.length; i++){
+            finalDistribute.push({
+                count:0,
+                discount:""
+            })
+        }
+    }
+
+   $("#getOrderList").click(function(){
+
+       $.get("/getOrderList?sessionId="+ $(":input#sessionId").val() + "&date="+ $("#date").val(), function(result){
+           distributeInit(); //初始化数组
+           if(!result){
+               $("#result").html("对方接口发神经了");
+               return;
+           }
 
            var orderList = JSON.parse(result).data.items;
            countTotalOrderNum(orderList);
-           console.log(finalDistribute);
+
+           $.each(finalDistribute, function(idx, item){
+               item.discount = calcuDiscount(item.count);
+           })
+
+           var text = [];
+           var totalDiscount = 0;
+
+           $.each(finalDistribute, function(idx, item){
+               text.push("<p>时间段:"+ TIMEZONE[idx].start + "~"+ TIMEZONE[idx].end +"订单数量:" +
+                         item.count + "优惠金额:"+ item.discount + "</p>");
+               totalDiscount +=  item.count*item.discount;
+           })
+           text.push("<p style='color:red;font-size:16px;'>总优惠额为:" + totalDiscount.toFixed(2) +"</p>");
+
+           $("#result").html(text.join(""));
+
        })
     })
 
@@ -74,7 +92,7 @@ $(function(){
      **/
     var DISCOUNTLIMIT = 8; // 小于固定桌数有优惠
     function calcuDiscount(orderCount){
-        if(orderCount < DISCOUNTLIMIT) {
+        if(orderCount < DISCOUNTLIMIT &&  orderCount>0) {
             return  (50*(8-orderCount)/(8*orderCount)).toFixed(2);
         } else {
             return 0;
@@ -87,8 +105,10 @@ $(function(){
      */
     function countTotalOrderNum(data){
         $.each(data||[], function(idx, item){
-            var timezone = getTimezoneNum(item.serverCreateTime);
-            finalDistribute[timezone]&&finalDistribute[timezone].count++;
+            if(item.tradeStatusName !=="已退款" && item.tradeStatusName !=="已作废"){
+                var timezone = getTimezoneNum(item.serverCreateTime);
+                finalDistribute[timezone]&&finalDistribute[timezone].count++;
+            }
         })
     }
 
