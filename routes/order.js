@@ -34,7 +34,7 @@ router.get('/', function(req, res, next) {
   var options = {
     host: 'b.keruyun.com',
     path: '/mind/tradeManage/queryList?pageSize=100&startDate='+ (req.query.date||DATE) +'&endDate='+ (req.query.date||DATE),
-    method: 'post',
+    method: 'GET',
     headers: {
       'Accept':  'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
       'Accept-Encoding': 'gzip, deflate, sdch',
@@ -43,11 +43,12 @@ router.get('/', function(req, res, next) {
       'Host': 'b.keruyun.com',
       'Pragma':'no-cache',
       'Upgrade-Insecure-Requests':1,
-      'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.36'
+      'User-Agent':'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'
     }
   };
+  console.log(JSON.stringify(options));
   console.log(options.headers);
-  http.get(options, function(res){
+  var req = http.request(options, function(res){
     console.log('STATUS:' + res.statusCode);
     console.log('HEADERS:' + JSON.stringify(res.headers));
     if(res.statusCode=="302"){
@@ -68,12 +69,19 @@ router.get('/', function(req, res, next) {
 
     res.setEncoding('utf8');
     res.on('data',function(chunk){
-      console.log('BODY' + chunk);
+      //console.log('BODY' + chunk);
       thisRes.write(chunk);
     }).on('end', function(){
       thisRes.end();
     })
-  })
+  });
+  req.on('error', function(e) {
+    console.log('problem with request: ${e.message}');
+  });
+
+  // write data to request body
+  //req.write(postData);
+  req.end();
 
 });
 
