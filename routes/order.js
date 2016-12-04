@@ -2,7 +2,6 @@ var express = require('express');
 var http = require('http');
 var router = express.Router();
 var iconv = require('iconv-lite');    //解决编码转换模块
-var BufferHelper = require('bufferhelper');
 var request = require('request');
 var SESSIONID = "8C66C245D008282423E6B356CC5D424D";
 var DATE =  new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-" + new Date().getDate();
@@ -27,7 +26,6 @@ router.get('/', function(req, res, next) {
       'Upgrade-Insecure-Requests':1,
       'Referer': 'http://b.keruyun.com/mind/tradeManage/listView',
       'Content-Type': "application/json; charset=utf-8",
-      'Content-Length': "0",
       'Connection': 'keep-alive',
       'Cache-Control': "no-cache",
       'X-Requested-With': "XMLHttpRequest",
