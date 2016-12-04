@@ -11,24 +11,39 @@ var DATE =  new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-" + n
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   SESSIONID = req.query.sessionId||SESSIONID;
-  console.log("SESSIONID:" +SESSIONID);
 
-  /*var options = {
-    url: 'http://b.keruyun.com/mind/tradeManage/queryList?pageSize=100',
+  var options = {
+    uri: 'http://b.keruyun.com/mind/tradeManage/queryList?pageSize=100&startDate='+
+          (req.query.date||DATE) +'&endDate='+ (req.query.date||DATE),
+    method: 'GET',
+    encoding:'utf8',
+    jar: 'true',
     headers: {
-      'Accept':  'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*!/!*;q=0.8',
-      'Accept-Encoding': 'gzip, deflate, sdch',
       'Accept-Language': 'zh-CN,zh;q=0.8,en;q=0.6',
-      'Cookie':"JSESSIONID=EAFAAE581117460823EC79B682253A3C; JSESSIONID=C5763F45EEDF07E4F414BB96CDD95847;",
-      'Host': 'b.keruyun.com',
+      'Cookie':"JSESSIONID="+ SESSIONID+"; crw_uid=9928bda9c294a3968797c6a38ccac5; cid=bid_7364; crw_bid=045135bbcb99ada2; crw_cid=045135bbcb99ada2; c_version=6; Hm_lvt_887cf26826dd888eebe2769131c9969d=1480841052; Hm_lpvt_887cf26826dd888eebe2769131c9969d=1480841052",
+      'Origin': 'b.keruyun.com',
       'Pragma':'no-cache',
+      'Accept': '*/*',
       'Upgrade-Insecure-Requests':1,
-      'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.36'
+      'Referer': 'http://b.keruyun.com/mind/tradeManage/listView',
+      'Content-Type': "application/json; charset=utf-8",
+      'Content-Length': "0",
+      'Connection': 'keep-alive',
+      'Cache-Control': "no-cache",
+      'X-Requested-With': "XMLHttpRequest",
+      'User-Agent':"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.36"
     }
   };
 
+  function callback(error, response,body){
 
-  request(options).pipe(res);*/
+      console.log(response.headers);
+
+  }
+
+
+  request(options,callback).pipe(res);
+/*
   var thisRes = res;
 
   var options = {
@@ -36,7 +51,7 @@ router.get('/', function(req, res, next) {
     path: '/mind/tradeManage/queryList?pageSize=100&startDate='+ (req.query.date||DATE) +'&endDate='+ (req.query.date||DATE),
     method: 'GET',
     headers: {
-      'Accept':  'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+      'Accept':  'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*!/!*;q=0.8',
       'Accept-Encoding': 'gzip, deflate, sdch',
       'Accept-Language': 'zh-CN,zh;q=0.8,en;q=0.6',
       'Cookie':"JSESSIONID="+ (req.query.sessionId||SESSIONID)+";",
@@ -75,6 +90,12 @@ router.get('/', function(req, res, next) {
       thisRes.end();
     })
   });
+/!*  for(key in req.agent) {
+    if (typeof req.agent[key] !== "function") {
+      console.log(key + ":" + req.agent[key]);
+    }
+  }*!/
+  //console.log("rrrrrrrrreeeeeeeeeeeeqqqqqqqqqq:"+ JSON.stringify(req.agent));
   req.on('error', function(e) {
     console.log('problem with request: ${e.message}');
   });
@@ -82,6 +103,7 @@ router.get('/', function(req, res, next) {
   // write data to request body
   //req.write(postData);
   req.end();
+*/
 
 });
 

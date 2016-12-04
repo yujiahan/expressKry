@@ -62,7 +62,7 @@ $(function(){
                return;
            }
 
-           var orderList = JSON.parse(result).data.items;
+           var orderList = result.data.items;
            countTotalOrderNum(orderList);
 
            $.each(finalDistribute, function(idx, item){
