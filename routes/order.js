@@ -4,13 +4,13 @@ var router = express.Router();
 var iconv = require('iconv-lite');    //解决编码转换模块
 var request = require('request');
 var SESSIONID = "8C66C245D008282423E6B356CC5D424D";
-var DATE =  new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-" + new Date().getDate();
+
 
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
+  var DATE =  new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-" + new Date().getDate();
   SESSIONID = req.query.sessionId||SESSIONID;
-
   var options = {
     uri: 'http://b.keruyun.com/mind/tradeManage/queryList?pageSize=100&startDate='+
           (req.query.date||DATE) +'&endDate='+ (req.query.date||DATE),
