@@ -1,3 +1,8 @@
+function login(){
+    $.post("/dologin", $('form').serialize()).error(function(){
+        window.location = location.href;
+    });
+}
 $(function(){
     var finalDistribute = [];
     var TIMEZONE = [
@@ -55,10 +60,15 @@ $(function(){
 
    $("#getOrderList").click(function(){
 
-       $.get("/getOrderList?sessionId="+ $(":input#sessionId").val() + "&date="+ $("#date").val(), function(result){
+       $.get("/getOrderList?sessionId="+ $(":input#sessionId").val() + "&date="+ $("#date").val(), function(result,status,xhr){
            distributeInit(); //初始化数组
-           if(!result){
-               $("#result").html("对方接口发神经了");
+           if(!result || xhr.getResponseHeader("Content-Type") == "text/html;charset=UTF-8"){
+
+               $("#result").html($(result).find("#loginForm").html());
+               $("#result").find("#username").val("dianzhang");
+               $("#result").find("#loginId").val("7364");
+               $("#result").find("#password").val("xxxxx");
+
                return;
            }
 
@@ -127,4 +137,6 @@ $(function(){
 
         return timezone;
     }
+
+
 })

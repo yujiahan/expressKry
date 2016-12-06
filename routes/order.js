@@ -2,14 +2,15 @@ var express = require('express');
 var http = require('http');
 var router = express.Router();
 var request = require('request');
-var SESSIONID = "8C66C245D008282423E6B356CC5D424D";
+//var SESSIONID = "8C66C245D008282423E6B356CC5D424D";
 
 
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
+
   var DATE =  new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-" + new Date().getDate();
-  SESSIONID = req.query.sessionId||SESSIONID;
+  //SESSIONID = req.query.sessionId||SESSIONID;
   var options = {
     uri: 'http://b.keruyun.com/mind/tradeManage/queryList?pageSize=100&startDate='+
           (req.query.date||DATE) +'&endDate='+ (req.query.date||DATE),
@@ -18,7 +19,7 @@ router.get('/', function(req, res, next) {
     jar: 'true',
     headers: {
       'Accept-Language': 'zh-CN,zh;q=0.8,en;q=0.6',
-      'Cookie':'JSESSIONID='+ SESSIONID+'; crw_uid=9928bda9c294a3968797c6a38ccac5; cid=bid_7364; crw_bid=045135bbcb99ada2; crw_cid=045135bbcb99ada2; c_version=6; Hm_lvt_887cf26826dd888eebe2769131c9969d=1480841052; Hm_lpvt_887cf26826dd888eebe2769131c9969d=1480841052',
+      //'Cookie':'JSESSIONID='+ SESSIONID+'; crw_uid=9928bda9c294a3968797c6a38ccac5; cid=bid_7364; crw_bid=045135bbcb99ada2; crw_cid=045135bbcb99ada2; c_version=6; Hm_lvt_887cf26826dd888eebe2769131c9969d=1480841052; Hm_lpvt_887cf26826dd888eebe2769131c9969d=1480841052',
       'Origin': 'b.keruyun.com',
       'Pragma':'no-cache',
       'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -32,7 +33,7 @@ router.get('/', function(req, res, next) {
     }
   };
 
-  function callback(error, response,body){
+  function callback(error, response, body){
       console.log(response.headers);
   }
 
