@@ -1,7 +1,6 @@
 var express = require('express');
 var http = require('http');
 var router = express.Router();
-var iconv = require('iconv-lite');    //解决编码转换模块
 var request = require('request');
 var SESSIONID = "8C66C245D008282423E6B356CC5D424D";
 
@@ -34,9 +33,7 @@ router.get('/', function(req, res, next) {
   };
 
   function callback(error, response,body){
-
       console.log(response.headers);
-
   }
 
 
