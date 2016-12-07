@@ -7,7 +7,6 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var order = require('./routes/order');
-var session = require('./routes/getSessionId');
 
 var app = express();
 
@@ -55,6 +54,8 @@ app.use(function(err, req, res, next) {
     message: err.message,
     error: {}
   });
+  if(err)console.log(err);
+  next();
 });
 server = app.listen(3000, function() {
   console.log('Listening on port %d', server.address().port);

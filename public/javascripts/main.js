@@ -60,7 +60,7 @@ $(function(){
 
    $("#getOrderList").click(function(){
 
-       $.get("/getOrderList?sessionId="+ $(":input#sessionId").val() + "&date="+ $("#date").val(), function(result,status,xhr){
+       $.get("/getOrderList?date="+ $("#date").val(), function(result,status,xhr){
            distributeInit(); //初始化数组
            if(!result || xhr.getResponseHeader("Content-Type") == "text/html;charset=UTF-8"){
 
@@ -79,7 +79,7 @@ $(function(){
                item.discount = calcuDiscount(item.count);
            })
 
-           var text = [];
+           var text = ["日期:"+ result.data.startDate.split(" ")[0]+"<br/>"];
            var totalDiscount = 0;
 
            $.each(finalDistribute, function(idx, item){

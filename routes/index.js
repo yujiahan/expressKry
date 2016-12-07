@@ -1,12 +1,14 @@
 var express = require('express');
 var router = express.Router();
 var request = require('request');
-var SESSIONID ;
 /* GET home page. */
 
 
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
+});
+router.get('/bussiness', function(req, res, next) {
+  res.render('bussiness', { title: '今日营业状况' });
 });
 
 router.post('/doLogin', function(req, res, next) {
@@ -40,6 +42,13 @@ router.get('/captcha.jpg', function(req, res, next) {
   }).pipe(res);
 })
 
+router.get('/loadTotal', function(req, res, next) {
+  request.get(
+      {
+        'uri': "http://b.keruyun.com/mind/report/homePage/loadOrderCounts",
+        'jar': true
+      }).pipe(res);
+})
 
 
 module.exports = router;
