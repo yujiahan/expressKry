@@ -65,8 +65,8 @@ $(function(){
            if(!result || xhr.getResponseHeader("Content-Type") == "text/html;charset=UTF-8"){
 
                $("#result").html($(result).find("#loginForm").html());
-               $("#result").find("#username").val("dianzhang");
-               $("#result").find("#loginId").val("7364");
+               $("#result").find("#username").val("xxxxx");
+               $("#result").find("#loginId").val("xxxxx");
                $("#result").find("#password").val("xxxxx");
 
                return;
