@@ -7,5 +7,22 @@ $(function(){
             $("#general").find(".js-card").text(result.orderCounts[1].totalSum);
         }
     })
+    $.get("/getOrderList", function(result){
+        var noonTotal = 0;
+        var nightTotal = 0;
+
+
+        $.each(result.data.items||[], function(idx,item){
+            if(item.tradeStatusName !=="已退款" && item.tradeStatusName !=="已作废") {
+                if(item.serverCreateTime.split(" ")[1].split(":")[0] < 16) {
+                    noonTotal += item.custShouldPay;
+                } else {
+                    nightTotal += item.custShouldPay;
+                }
+            }
+        })
+        $("#general").find(".js-noonTotal").text(noonTotal.toFixed(2));
+        $("#general").find(".js-nightTotal").text(nightTotal.toFixed(2));
+    })
 
 })

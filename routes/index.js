@@ -35,7 +35,7 @@ router.post('/doLogin', function(req, res, next) {
 router.get('/captcha.jpg', function(req, res, next) {
   request.get(
       {
-        'uri': "http://sso.keruyun.com/cas/captcha.jpg",
+        'uri': "http://sso.keruyun.com/cas/captcha.jpg?"+Math.random(),
         'jar': true
       }, function(err, rep, body){
 

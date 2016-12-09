@@ -5,21 +5,44 @@ html
         link(rel='stylesheet', href='/stylesheets/style.css')
         link(rel='stylesheet', href='/stylesheets/materialize.css')
     body
-    h5(class="materialize-red-text textlighten-3") 营业概况
-    div
-        table#general
-            thead
-                tr
-                    th 已收金额
-                    th 未收金额
-                    th 订单总额
-                    th 总储值收入
-            tbody
-                tr
-                    td(class="js-payed")
-                    td(class="js-noPayed")
-                    td(class="js-allPayed")
-                    td(class="js-card")
-        script(src="javascripts/lib/jquery.js")
-        script(src="javascripts/bussiness.js")
+
+    div.container
+        h5.col.s12.materialize-red-text.textlighten-3 营业概况
+        div#general
+            div.row
+                div.col.s5
+                    div.card
+                        div.card-content.blue.lighten-3.white-text
+                            span 全天已收金额
+                            h4.js-payed.black-text
+                div.col.s5
+                    div.card
+                        div.card-content.purple.lighten-3.white-text
+                            span 全天已收金额
+                            h4.js-noPayed.black-text
+            div.row
+                div.col.s5
+                    div.card
+                        div.card-content.red.lighten-3.white-text
+                            span 全天已收金额
+                            h4.js-allPayed.black-text
+                div.col.s5
+                    div.card
+                        div.card-content.green.lighten-3.white-text
+                            span 全天已收金额
+                            h4.js-card.black-text
+            div.row
+                div.col.s5
+                    div.card
+                        div.card-content.lime.lighten-3.white-text
+                            span 中午订单总额
+                            h4.js-noonTotal.black-text
+                div.col.s5
+                    div.card
+                        div.card-content.grey.lighten-3.white-text
+                            span 晚上订单总额
+                            h4.js-nightTotal.black-text
+
+    script(src="javascripts/lib/jquery.js")
+    script(src="javascripts/bussiness.js")
 
