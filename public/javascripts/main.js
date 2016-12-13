@@ -91,6 +91,28 @@ $(function(){
 
            $("#result").html(text.join(""));
 
+           /*var orderRank = [];
+
+
+            $.each(orderList, function(idx, item){
+                var timeZone = getTimezoneNum(item.serverCreateTime);
+                if(timeZone && finalDistribute[timeZone].discount) {
+                    orderRank.push({
+                        serverCreateTime : item.serverCreateTime,
+                        discount: finalDistribute[timeZone].discount,
+                        discountRate: (1-finalDistribute[timeZone].discount/ (item.custShouldPay)).toFixed(3)
+                    })
+                }
+
+            })
+
+           var rankingHtml = [];
+           $.each(orderRank, function(idx, item){
+               rankingHtml.push ("<p>下单时间:"+ item.serverCreateTime +"优惠金额:" +
+                   item.discount + "优惠率:"+ item.discountRate + "</p>")
+           })
+
+           $("#result").append(rankingHtml.join(""));*/
        })
     })
 

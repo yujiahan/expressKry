@@ -25,4 +25,10 @@ $(function(){
         $("#general").find(".js-nightTotal").text(nightTotal.toFixed(2));
     })
 
+    $.get("/loadPeriodTotal?type=lastWeek&r="+ Math.random(), function(result){
+        $("#general").find(".js-lastWeek").text(result.lastWeek);
+        $("#general").find(".js-thisWeek").text(result.thisWeek);
+        $("#general").find(".js-thisMonth").text(result.thisMonth);
+    })
+
 })

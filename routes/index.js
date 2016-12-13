@@ -50,5 +50,58 @@ router.get('/loadTotal', function(req, res, next) {
       }).pipe(res);
 })
 
+router.get('/loadPeriodTotal', function(req, res, next) {
+    var thisWeekPromise  = new Promise(function(resolve, reject) {
+        _queryPeriodData("thisWeek",resolve, reject);
+    })
+    var lastWeekPromise  = new Promise(function(resolve, reject) {
+        _queryPeriodData("lastWeek",resolve, reject);
+    })
+
+    var thisMonthPromis  = new Promise(function(resolve, reject) {
+        _queryPeriodData("thisMonth",resolve, reject);
+    })
+
+    Promise.all([thisWeekPromise, lastWeekPromise, thisMonthPromis]).then(function(data){
+        res.send({
+            thisWeek : data[0],
+            lastWeek: data[1],
+            thisMonth: data[2]
+        })
+    })
+})
+function _queryPeriodData(type, resolve, reject){
+    var ENDDATE;
+    var STARTDATE ;
+
+    if(type === "thisWeek") {
+        var week = new Date().getDay() === 0? 7 :  new Date().getDay()
+        var weekStart = new Date(new Date().getTime() - 24*3600*1000* (week-1));
+        STARTDATE = weekStart.getFullYear() + "-" + (weekStart.getMonth()+1) + "-" + weekStart.getDate();
+        ENDDATE = new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-" + new Date().getDate();
+    } else if(type === "lastWeek"){
+        var week = new Date().getDay() === 0? 7 :  new Date().getDay();
+        var weekStart = new Date(new Date().getTime() - 24*3600*1000* (week + 6));
+        var weekEnd = new Date(new Date().getTime() - 24*3600*1000*7);
+        STARTDATE = weekStart.getFullYear() + "-" + (weekStart.getMonth()+1) + "-" + weekStart.getDate();
+        ENDDATE = weekEnd.getFullYear() + "-" + (weekEnd.getMonth()+1) + "-" + weekEnd.getDate();
+    } else if(type === "thisMonth"){
+        STARTDATE = new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-01";
+        ENDDATE = new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-" + new Date().getDate();
+    }
+
+    request.get(
+        {
+            'uri': "http://b.keruyun.com/mind/report/bizCondition/loadDataChart?startDate="+ STARTDATE +"&endDate="+ ENDDATE +"&cmIds=810006136&shopIdentys=810006136",
+            'jar': true
+        }, function(err, httpResponse, body){
+            if(body && body.indexOf("script") < 0) {
+                resolve(JSON.parse(body) && JSON.parse(body).sumDataInfo && JSON.parse(body).sumDataInfo.receivableSum)
+            } else {
+                resolve("error")
+            }
+    })
+}
+
 
 module.exports = router;

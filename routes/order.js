@@ -30,7 +30,7 @@ router.get('/', function(req, res, next) {
   };
 
   function callback(error, response, body){
-      console.log(response.headers);
+      //console.log(response.headers);
   }
 
 
