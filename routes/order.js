@@ -29,12 +29,8 @@ router.get('/', function(req, res, next) {
     }
   };
 
-  function callback(error, response, body){
-      //console.log(response.headers);
-  }
 
-
-  request(options,callback).pipe(res);
+  request(options).pipe(res);
 });
 
 

@@ -49,6 +49,13 @@ router.get('/loadTotal', function(req, res, next) {
         'jar': true
       }).pipe(res);
 })
+router.get('/getAvgPersonToday', function(req, res, next) {
+    request.get(
+        {
+            'uri': "http://b.keruyun.com/mind/report/homePage/loadSalesCountChart",
+            'jar': true
+        }).pipe(res);
+})
 
 router.get('/loadPeriodTotal', function(req, res, next) {
     var thisWeekPromise  = new Promise(function(resolve, reject) {

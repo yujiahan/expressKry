@@ -31,4 +31,8 @@ $(function(){
         $("#general").find(".js-thisMonth").text(result.thisMonth);
     })
 
+    $.get("/getAvgPersonToday", function(result){
+        $("#general").find(".js-avgPerson").text(result.priceAvgPerson);
+    })
+
 })

@@ -91,16 +91,16 @@ $(function(){
 
            $("#result").html(text.join(""));
 
-           /*var orderRank = [];
+/*           var orderRank = [];
 
 
             $.each(orderList, function(idx, item){
                 var timeZone = getTimezoneNum(item.serverCreateTime);
-                if(timeZone && finalDistribute[timeZone].discount) {
+                if(timeZone !== null && finalDistribute[timeZone].discount) {
                     orderRank.push({
                         serverCreateTime : item.serverCreateTime,
                         discount: finalDistribute[timeZone].discount,
-                        discountRate: (1-finalDistribute[timeZone].discount/ (item.custShouldPay)).toFixed(3)
+                        discountRate: (100*finalDistribute[timeZone].discount/ (item.custShouldPay)).toFixed(3)
                     })
                 }
 
@@ -148,7 +148,7 @@ $(function(){
      * 计算所处时区编码
      */
     function getTimezoneNum(createTime){
-        var timezone;
+        var timezone = null;
         $.each(TIMEZONE, function(idx, item){
             var timeParse =  createTime.split(" ")[1].replace(/:/g, "");
             if(timeParse < item.end.replace(/:/g, "") && timeParse >= item.start.replace(/:/g, "")){
