@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
 
   var DATE =  new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-" + new Date().getDate();
   var options = {
-    uri: 'http://b.keruyun.com/mind/tradeManage/queryList?pageSize=100&startDate='+
+    uri: 'http://b.keruyun.com/mind/tradeManage/queryList?orderDateType=1&pageSize=100&startDate='+
           (req.query.date||DATE) +'&endDate='+ (req.query.date||DATE),
     method: 'GET',
     encoding:'utf8',
