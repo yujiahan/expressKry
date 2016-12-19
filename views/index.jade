@@ -1,13 +1,11 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
 
-  span 时间:
-  input#date( placeholder="格式为2016-11-11")
-  button#getOrderList 获取订单数据
-  h3 结果
-  form#result(action="doLogin" method="post")
-
+  div.container
+    div
+      input#date.input-field(placeholder="格式为2016-11-11")
+    div
+      a#getOrderList.waves-effect.waves-light.btn 获取订单数据
+    form#result(action="doLogin" method="post")
 

@@ -78,18 +78,38 @@ $(function(){
            $.each(finalDistribute, function(idx, item){
                item.discount = calcuDiscount(item.count);
            })
-
-           var text = ["日期:"+ result.data.startDate.split(" ")[0]+"<br/>"];
            var totalDiscount = 0;
-
-           $.each(finalDistribute, function(idx, item){
-               text.push("<p>时间段:"+ TIMEZONE[idx].start + "~"+ TIMEZONE[idx].end +"订单数量:" +
-                         item.count + "优惠金额:"+ item.discount + "</p>");
-               totalDiscount +=  item.count*item.discount;
+           var text = ["日期:"+ result.data.startDate.split(" ")[0]+"<br/>"];
+           text.push("<table class='striped'><thead><tr>" +
+                     "<th>桌号</th>" +
+                     "<th>订单优惠</th>" +
+                     "<th>下单时间</th>" +
+                     "<th>订单号</th>" +
+                     "</tr></thead><tbody>")
+           $.each(orderList||[], function(idx, item){
+               var timeParse =  item.serverCreateTime.split(" ")[1].replace(/:/g, "");
+               if(timeParse <= "140000" && timeParse >= "110000" && item.tradeStatusName !=="已退款" && item.tradeStatusName !=="已作废"){
+                   text.push("<tr><td>" + item.tableInfo + "</td><td>"+ countPromotion(item.serverCreateTime, orderList)+ "</td><td>"+ item.serverCreateTime + "</td><td>"+ item.tradeNo +"</tr>");
+                   totalDiscount += parseFloat(countPromotion(item.serverCreateTime, orderList));
+               }
            })
-           text.push("<p style='color:red;font-size:16px;'>总优惠额为:" + totalDiscount.toFixed(2) +"</p>");
+           text.push("</tbody></table>")
+
+           text.push("<p style='color:red;font-size:16px;'>新总优惠额为:" + totalDiscount.toFixed(2) + "</p>");
 
            $("#result").html(text.join(""));
+           var oldText = ["========================"];
+
+           var totalOldDiscount = 0;
+
+           $.each(finalDistribute, function (idx, item) {
+               oldText.push("<p>时间段:" + TIMEZONE[idx].start + "~" + TIMEZONE[idx].end + "订单数量:" +
+                   item.count + "优惠金额:" + item.discount + "</p>");
+               totalOldDiscount += item.count * item.discount;
+           })
+           oldText.push("<p style='color:red;font-size:16px;'>旧总优惠额为:" + totalOldDiscount.toFixed(2) + "</p>");
+
+           $("#result").append(oldText.join(""));
 
 /*           var orderRank = [];
 
@@ -131,6 +151,21 @@ $(function(){
         }
     }
 
+    /**
+     *
+     */
+    function countPromotion(orderDate, orderList){
+        var count = 0;
+        var orderMs =  new Date(orderDate).getTime();
+
+        $.each(orderList ||[], function(idx, item){
+            var compareMs = new Date(item.serverCreateTime).getTime();
+            if(item.tradeStatusName !=="已退款" && item.tradeStatusName !=="已作废" && Math.abs(compareMs - orderMs)<= 10*60*1000){
+                count ++;
+            }
+        })
+        return calcuDiscount(count);
+    }
     /**
      * 统计时段内的订单数
      * @param timeZone

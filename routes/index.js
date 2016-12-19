@@ -99,11 +99,11 @@ function _queryPeriodData(type, resolve, reject){
 
     request.get(
         {
-            'uri': "http://b.keruyun.com/mind/report/bizCondition/loadDataChart?startDate="+ STARTDATE +"&endDate="+ ENDDATE +"&cmIds=810006136&shopIdentys=810006136",
+            'uri': "http://b.keruyun.com/mind/report/collection/query?startDate="+ STARTDATE +"&endDate="+ ENDDATE +"&commercialId=810006136&shopName=%2525E6%2525A4%252592%2525E5%2525A1%252598&type=1",
             'jar': true
         }, function(err, httpResponse, body){
             if(body && body.indexOf("script") < 0) {
-                resolve(JSON.parse(body) && JSON.parse(body).sumDataInfo && JSON.parse(body).sumDataInfo.receivableSum)
+                resolve(JSON.parse(body)  && JSON.parse(body).income)
             } else {
                 resolve("error")
             }
