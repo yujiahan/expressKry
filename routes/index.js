@@ -10,6 +10,9 @@ router.get('/', function(req, res, next) {
 router.get('/bussiness', function(req, res, next) {
   res.render('bussiness', { title: '今日营业状况' });
 });
+router.get('/chart', function(req, res, next) {
+    res.render('chart', { title: '图表' });
+});
 
 router.post('/doLogin', function(req, res, next) {
   request.post({
