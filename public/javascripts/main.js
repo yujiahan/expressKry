@@ -59,8 +59,10 @@ $(function(){
     }
 
    $("#getOrderList").click(function(){
+       $("#loading").show();
 
        $.get("/getOrderList?date="+ $("#date").val(), function(result,status,xhr){
+           $("#loading").hide();
            distributeInit(); //初始化数组
            if(!result || xhr.getResponseHeader("Content-Type") == "text/html;charset=UTF-8"){
 
@@ -88,8 +90,8 @@ $(function(){
                      "</tr></thead><tbody>")
            $.each(orderList||[], function(idx, item){
                var timeParse =  item.serverCreateTime.split(" ")[1].replace(/:/g, "");
-               if(timeParse <= "140000" && timeParse >= "110000" && item.tradeStatusName !=="已退款" && item.tradeStatusName !=="已作废"){
-                   text.push("<tr><td>" + item.tableInfo + "</td><td>"+ countPromotion(item.serverCreateTime, orderList)+ "</td><td>"+ item.serverCreateTime + "</td><td>"+ item.tradeNo +"</tr>");
+               if(timeParse <= "140000" && timeParse >= "110000" && item.tableInfo&& item.tradeStatusName !=="已退款" && item.tradeStatusName !=="已作废"){
+                   text.push("<tr><td><span class="+ (item.tradePayStatusName==="已支付"? "green-text":"red-text")+">" + item.tableInfo + "("+ item.tradePayStatusName +")"+"</span></td><td>"+ countPromotion(item.serverCreateTime, orderList)+ "</td><td>"+ item.serverCreateTime + "</td><td>"+ item.tradeNo +"</tr>");
                    totalDiscount += parseFloat(countPromotion(item.serverCreateTime, orderList));
                }
            })
@@ -156,11 +158,11 @@ $(function(){
      */
     function countPromotion(orderDate, orderList){
         var count = 0;
-        var orderMs =  new Date(orderDate).getTime();
+        var orderMs =  new Date(orderDate.replace(/-/g, "/")).getTime();
 
         $.each(orderList ||[], function(idx, item){
-            var compareMs = new Date(item.serverCreateTime).getTime();
-            if(item.tradeStatusName !=="已退款" && item.tradeStatusName !=="已作废" && Math.abs(compareMs - orderMs)<= 10*60*1000){
+            var compareMs = new Date(item.serverCreateTime.replace(/-/g, "/")).getTime();
+            if(item.tableInfo && item.tradeStatusName !=="已退款" && item.tradeStatusName !=="已作废" && Math.abs(compareMs - orderMs)<= 10*60*1000){
                 count ++;
             }
         })
