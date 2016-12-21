@@ -49,9 +49,10 @@ $.get("getOrderList", function(result){
             color: '#cdd0d5'
         }]),
         title: {
-            text: '2016-12-20 优惠金额分布'
+            text: new Date().getFullYear() + (new Date().getMonth()+1)+(new Date().getDate()) + '优惠金额分布'
         },
         xAxis: {
+            name:"下单时间",
             type: "time",
             splitLine: {
                 lineStyle: {
@@ -64,6 +65,7 @@ $.get("getOrderList", function(result){
             }
         },
         yAxis: {
+            name:"优惠金额",
             splitLine: {
                 lineStyle: {
                     type: 'dashed'
