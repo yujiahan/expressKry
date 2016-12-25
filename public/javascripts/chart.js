@@ -49,7 +49,7 @@ $.get("getOrderList?date="+ location.search.replace("?date=", ""), function(resu
             color: '#cdd0d5'
         }]),
         title: {
-            text: (location.search.replace("?date=", "") || new Date().getFullYear() +"-"+ (new Date().getMonth()+1) +"-"+ (new Date().getDate())) + '优惠金额分布'
+            text: (location.search.replace("?date=", "") || new Date().getFullYear() +"-"+ (new Date().getMonth()+1) +"-"+ (new Date().getDate())) + ' 优惠金额分布'
         },
         xAxis: {
             name:"下单时间",
