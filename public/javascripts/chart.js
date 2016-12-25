@@ -26,7 +26,7 @@ function countPromotion(orderDate, orderList){
     return calcuDiscount(count);
 }
 
-$.get("getOrderList", function(result){
+$.get("getOrderList?date="+ location.search.replace("?date=", ""), function(result){
     var orderList = result.data.items;
     var chartData  = [];
     $.each(orderList||[], function(idx, item){
@@ -49,7 +49,7 @@ $.get("getOrderList", function(result){
             color: '#cdd0d5'
         }]),
         title: {
-            text: new Date().getFullYear() +"-"+ (new Date().getMonth()+1) +"-"+ (new Date().getDate()) + '优惠金额分布'
+            text: location.search.replace("?date=", "") || new Date().getFullYear() +"-"+ (new Date().getMonth()+1) +"-"+ (new Date().getDate()) + '优惠金额分布'
         },
         xAxis: {
             name:"下单时间",
