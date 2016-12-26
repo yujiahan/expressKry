@@ -1,17 +1,53 @@
 var express = require('express');
 var router = express.Router();
 var request = require('request');
+require('events').EventEmitter.prototype._maxListeners = 100;
 /* GET home page. */
 
 
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
+
 router.get('/bussiness', function(req, res, next) {
   res.render('bussiness', { title: '今日营业状况' });
 });
 router.get('/chart', function(req, res, next) {
     res.render('chart', { title: '图表' });
+});
+
+var loginJar = request.jar(); //用于登录的jar
+
+/* GET users listing. */
+router.get('/getOrderList', function(req, res, next) {
+
+    var DATE =  new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-" + new Date().getDate();
+    var options = {
+        uri: 'http://b.keruyun.com/mind/tradeManage/queryList?orderDateType=1&pageSize=100&startDate='+
+        (req.query.date||DATE) +'&endDate='+ (req.query.date||DATE),
+        method: 'GET',
+        encoding:'utf8',
+        jar: loginJar,
+        headers: {
+            'Accept-Language': 'zh-CN,zh;q=0.8,en;q=0.6',
+            'Origin': 'b.keruyun.com',
+            'Pragma':'no-cache',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Upgrade-Insecure-Requests':1,
+            'Referer': 'http://b.keruyun.com/mind/tradeManage/listView',
+            'Content-Type': 'application/json; charset=utf-8',
+            'Connection': 'keep-alive',
+            'Cache-Control': 'no-cache',
+            'X-Requested-With': 'XMLHttpRequest',
+            'User-Agent':'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.7) Gecko/20100726 CentOS/3.6-3.el5.centos Firefox/3.6.7'
+        }
+    };
+
+
+    request(options).on("response", function(response){
+       console.log("====================");
+       console.log(response.request.req._header);
+    }).pipe(res);
 });
 
 router.post('/doLogin', function(req, res, next) {
@@ -32,14 +68,14 @@ router.post('/doLogin', function(req, res, next) {
       "Accept-Language": "zh-CN,zh;q=0.8,en;q=0.6"
     },
     form : req.body,
-    jar: true,
+    jar: loginJar
   }).pipe(res);
 })
 router.get('/captcha.jpg', function(req, res, next) {
   request.get(
       {
         'uri': "http://sso.keruyun.com/cas/captcha.jpg?"+Math.random(),
-        'jar': true
+        'jar': loginJar
       }, function(err, rep, body){
 
   }).pipe(res);
@@ -49,10 +85,11 @@ router.get('/loadTotal', function(req, res, next) {
   request.get(
       {
         'uri': "http://b.keruyun.com/mind/report/homePage/loadOrderCounts",
-        'jar': true
+        'jar': loginJar
       }).pipe(res);
 })
 router.get('/getAvgPersonToday', function(req, res, next) {
+    //console.log(loginJar.getCookies("http://b.keruyun.com/mind"));
     request.get(
         {
             'uri': "http://b.keruyun.com/mind/report/homePage/loadSalesCountChart",
@@ -83,6 +120,7 @@ router.get('/loadPeriodTotal', function(req, res, next) {
 function _queryPeriodData(type, resolve, reject){
     var ENDDATE;
     var STARTDATE ;
+    var j = request.jar();
 
     if(type === "thisWeek") {
         var week = new Date().getDay() === 0? 7 :  new Date().getDay()
@@ -99,11 +137,12 @@ function _queryPeriodData(type, resolve, reject){
         STARTDATE = new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-01";
         ENDDATE = new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-" + new Date().getDate();
     }
+    j.setCookie(loginJar.getCookieString("http://b.keruyun.com/mind"), "http://b.keruyun.com/mind");
 
     request.get(
         {
             'uri': "http://b.keruyun.com/mind/report/collection/query?startDate="+ STARTDATE +"&endDate="+ ENDDATE +"&commercialId=810006136&shopName=%2525E6%2525A4%252592%2525E5%2525A1%252598&type=1",
-            'jar': true
+            'jar': j
         }, function(err, httpResponse, body){
             if(body && body.indexOf("script") < 0) {
                 resolve(JSON.parse(body)  && JSON.parse(body).income)
