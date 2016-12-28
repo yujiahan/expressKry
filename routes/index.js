@@ -90,10 +90,12 @@ router.get('/loadTotal', function(req, res, next) {
 })
 router.get('/getAvgPersonToday', function(req, res, next) {
     //console.log(loginJar.getCookies("http://b.keruyun.com/mind"));
+    var j = request.jar();
+    j.setCookie(loginJar.getCookieString("http://b.keruyun.com/mind"), "http://b.keruyun.com/mind");
     request.get(
         {
             'uri': "http://b.keruyun.com/mind/report/homePage/loadSalesCountChart",
-            'jar': true
+            'jar': j
         }).pipe(res);
 })
 
