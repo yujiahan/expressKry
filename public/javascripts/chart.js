@@ -70,7 +70,7 @@ $.get("getOrderList?fromDate="+ getQueryString("fromDate") + "&toDate=" + getQue
             color: '#cdd0d5'
         }]),
         title: {
-            text: chartType ==="LASTWEEK"? "上周优惠金额("+getQueryString("fromDate") +"~"+getQueryString("toDate") +")" :
+            text: chartType ==="LASTWEEK"? "一周优惠金额分布("+getQueryString("fromDate") +"~"+getQueryString("toDate") +")" :
                     (location.search.replace("?date=", "") || new Date().getFullYear() +"-"+ (new Date().getMonth()+1) +"-"+ (new Date().getDate())) + ' 优惠金额分布',
             textStyle: {
                 fontSize: 28
