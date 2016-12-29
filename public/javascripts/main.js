@@ -61,7 +61,7 @@ $(function(){
    $("#getOrderList").click(function(){
        $("#loading").show();
 
-       $.get("/getOrderList?date="+ $("#date").val(), function(result,status,xhr){
+       $.get("/getOrderList?fromDate="+ $("#date").val() + "&toDate=" + $("#date").val(), function(result,status,xhr){
            $("#loading").hide();
            distributeInit(); //初始化数组
            if(!result || xhr.getResponseHeader("Content-Type") == "text/html;charset=UTF-8"){
@@ -70,7 +70,6 @@ $(function(){
                $("#result").find("#username").val("xxxxx");
                $("#result").find("#loginId").val("xxxxx");
                $("#result").find("#password").val("xxxxx");
-
                return;
            }
 
