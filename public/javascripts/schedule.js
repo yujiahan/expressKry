@@ -92,8 +92,10 @@ var orderList = new Vue({
     },
     methods: {
         dishMaking: function(dish, order){
-            dish.arranged = true;
-            message.$emit("dishToChef", {dish:dish, chefId: 1})
+            if(!dish.arranged){
+                dish.arranged = true;
+                message.$emit("dishToChef", {dish:dish, chefId: 1})
+            }
         }
     },
     computed: {
@@ -101,13 +103,13 @@ var orderList = new Vue({
             return function(order){
                 var arrangedCount = 0;
 
-                order.dishList.map(function(value){
+                (order.dishList||[]).map(function(value){
                     if(value.arranged) {
                         arrangedCount ++;
                     }
                 })
-                order.allArranged = (arrangedCount === order.dishList.length);
-                return  arrangedCount === order.dishList.length;
+                order.allArranged = (arrangedCount === (order.dishList||[]).length);
+                return  arrangedCount === (order.dishList||[]).length;
             }
 
         },
@@ -115,17 +117,17 @@ var orderList = new Vue({
             return function(order){
                 var makedCount = 0;
 
-                order.dishList.map(function(value){
+                (order.dishList||[]).map(function(value){
                     if(value.maked) {
                         makedCount ++;
                     }
                 })
-                order.allMaked = ( makedCount === order.dishList.length);
+                order.allMaked = ( makedCount === (order.dishList||[]).length);
 
-                return   makedCount === order.dishList.length;
+                return   makedCount === (order.dishList||[]).length;
             }
 
-        },
+        }
     }
 })
 var chefList = new Vue({
@@ -155,6 +157,7 @@ var message = new Vue();
 
 message.$on('dishToChef', function (param) {
     chefList.chefList[param.chefId].makingList.push(param.dish)
+    joinDish(chefList.chefList[param.chefId].makingList);
 
 })
 
@@ -174,7 +177,43 @@ function processOrginData(data){
             order.dishList[idx].dishCode = value.dishCode;
             order.dishList[idx].arranged = false;
             order.dishList[idx].maked = false;
+            order.dishList[idx].isFirst = false;
         })
     })
     return orderData;
 }
+/**
+ * 合并当前厨师同类项
+ * @param makingList
+ */
+function joinDish(makingList){
+    var hasDish = {};
+
+    makingList.map(function(dish){
+        if(!hasDish[dish.dishName]){
+            hasDish[dish.dishName] = {
+                count: 1
+            };
+            dish.isFirst = true;
+        } else {
+            hasDish[dish.dishName].count ++;
+        }
+    })
+
+    makingList.map(function(dish, idx){
+        if(dish.isFirst){
+            dish.count = hasDish[dish.dishName].count;
+        }
+    })
+}
+
+setTimeout(function(){
+    orderList.orderData.push({createtime:"xxxx"})
+}, 1000)
+
+setTimeout(function(){
+    var container = document.querySelector('#order');
+    var msnry = new Masonry( container,{ "itemSelector": ".grid-item","gutter":20, "columnWidth": 200 } );
+    msnry.layout();
+
+},2000)

@@ -7,7 +7,7 @@ html
         link(rel='stylesheet', href='/stylesheets/schedule.css')
     body
         div
-            div#order.js-masonry(v-cloak, style="width:80%;float:left" data-masonry='{ "itemSelector": ".grid-item","gutter":10, "columnWidth": 200 }')
+            div#order.js-masonry(v-cloak, style="width:80%;float:left" data-masonry='{ "itemSelector": ".grid-item","gutter":20, "columnWidth": 200 }')
                div.grid-item(v-for="order in orderData")
                    p 创建时间:{{order.createtime}}
                    p 桌号:{{order.tableInfo}}
@@ -22,7 +22,10 @@ html
             div#chef(v-cloak, style="float:right;width:15%")
                  div.chef(v-for="chef in chefList") {{chef.name}}
                     p 正在制作
-                    p(v-for="dish in chef.makingList") {{dish.dishName}}
+                    p(v-for="dish in chef.makingList")
+                        span(v-if="dish.isFirst") {{dish.dishName}}
+                        span(v-if="dish.isFirst") {{dish.count}}
+    script(src="javascripts/lib/jquery.js")
     script(src="javascripts/lib/masonry-4.1.1.min.js")
     script(src="https://unpkg.com/vue/dist/vue.js")
     script(src="javascripts/schedule.js")
