@@ -1,0 +1,12 @@
+.grid-item { width: 200px;
+             border: 1px solid;
+             padding: 10px;
+             margin-bottom: 10px;
+            }
+
+[v-cloak] {
+    display: none;
+}
+.chef {
+    border-bottom: 1px solid #00bfa5;
+}

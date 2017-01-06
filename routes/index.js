@@ -15,6 +15,9 @@ router.get('/bussiness', function(req, res, next) {
 router.get('/chart', function(req, res, next) {
     res.render('chart', { title: '图表' });
 });
+router.get('/schedule', function(req, res, next) {
+    res.render('schedule');
+});
 
 var loginJar = request.jar(); //用于登录的jar
 

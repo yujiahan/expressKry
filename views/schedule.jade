@@ -1,0 +1,29 @@
+doctype html
+html
+    head
+        title= title
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        link(rel='stylesheet', href='/stylesheets/materialize.css')
+        link(rel='stylesheet', href='/stylesheets/schedule.css')
+    body
+        div
+            div#order.js-masonry(v-cloak, style="width:80%;float:left" data-masonry='{ "itemSelector": ".grid-item","gutter":10, "columnWidth": 200 }')
+               div.grid-item(v-for="order in orderData")
+                   p 创建时间:{{order.createtime}}
+                   p 桌号:{{order.tableInfo}}
+                   p 菜列表
+                        span(v-if="allRanged(order)") /全部分配
+                        span(v-if="allMaked(order)") 全部制作完成
+                   p(v-for="dish in order.dishList")
+                        span(@click="dishMaking(dish,order)") {{dish.dishName}}
+                        span(v-if="dish.arranged") ／正在制作
+
+
+            div#chef(v-cloak, style="float:right;width:15%")
+                 div.chef(v-for="chef in chefList") {{chef.name}}
+                    p 正在制作
+                    p(v-for="dish in chef.makingList") {{dish.dishName}}
+    script(src="javascripts/lib/masonry-4.1.1.min.js")
+    script(src="https://unpkg.com/vue/dist/vue.js")
+    script(src="javascripts/schedule.js")
+
