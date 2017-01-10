@@ -19,8 +19,10 @@ function countPromotion(orderDate, orderList){
                }
            })
            return calcuDiscount(count);
-       }
+}
 
+        //主流程
+       document.body.innerHTML ="" 
        var DATE =  new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-" + new Date().getDate();
 
        $.get('/mind/tradeManage/queryList?orderDateType=1&pageSize=1000&startDate='+ DATE +'&endDate='+ DATE, function(result) {
