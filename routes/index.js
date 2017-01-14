@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var request = require('request');
 require('events').EventEmitter.prototype._maxListeners = 100;
+process.stdin.setEncoding('utf8');
+
 /* GET home page. */
 
 
@@ -26,7 +28,8 @@ router.get('/getOrderList', function(req, res, next) {
 
     var DATE =  new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-" + new Date().getDate();
     var options = {
-        uri: 'http://b.keruyun.com/mind/tradeManage/queryList?orderDateType=1&pageSize=100',
+        uri: 'http://b.keruyun.com/mind/tradeManage/queryList?orderDateType=1&pageSize=100&startDate='+
+             (req.query.fromDate||DATE) +'&endDate='+ (req.query.toDate||DATE),
         method: 'get',
         encoding:'utf8',
         jar: loginJar
