@@ -26,7 +26,7 @@ var loginJar = request.jar(); //用于登录的jar
 /* GET users listing. */
 router.get('/getOrderList', function(req, res, next) {
 
-    var DATE =  new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-" + new Date().getDate();
+    var DATE =  new Date().getFullYear() + "-" + ((new Date().getMonth()+1)<10? ("0"+(new Date().getMonth()+1)) : new Date().getMonth()+1) + "-" + (new Date().getDate()<10? ("0"+new Date().getDate()):new Date().getDate());
     var options = {
         uri: 'http://b.keruyun.com/mind/tradeManage/queryList?orderDateType=1&pageSize=100&startDate='+
              (req.query.fromDate||DATE) +'&endDate='+ (req.query.toDate||DATE),
