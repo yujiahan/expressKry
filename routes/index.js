@@ -46,7 +46,6 @@ router.post('/doLogin', function(req, res, next) {
     uri:'http://sso.keruyun.com/cas/login?service=http://b.keruyun.com/cas',
     headers: {
       "Connection": "keep-alive",
-      "Content-Length": 166,
       "Cache-Control": "max-age=0",
       "Origin": "http://sso.keruyun.com",
       "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.36",
