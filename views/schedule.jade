@@ -17,16 +17,21 @@ html
                    p(v-for="dish in order.dishList")
                         span(@click="dishMaking(dish,order)") {{dish.dishName}}
                         span(v-if="dish.arranged") ／正在制作
-
-
             div#chef(v-cloak, style="float:right;width:15%")
                  div.chef(v-for="chef in chefList") {{chef.name}}
                     p 正在制作
                     p(v-for="dish in chef.makingList")
                         span(v-if="dish.isFirst") {{dish.dishName}}
                         span(v-if="dish.isFirst") {{dish.count}}
-    script(src="javascripts/lib/jquery.js")
+            div#dishSorted(v-cloak)
+                p 菜品优先级排序
+                button(@click="sortAlldish") 计算菜品优先级
+                p(v-for="dish in dishSorted")
+                    span {{dish.uniqueID}} {{dish.finalPriority}}
+
+
+
     script(src="javascripts/lib/masonry-4.1.1.min.js")
     script(src="https://unpkg.com/vue/dist/vue.js")
-    script(src="javascripts/schedule.js")
+    script(src="dist/schedule.js")
 
