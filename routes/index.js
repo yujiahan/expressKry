@@ -28,7 +28,7 @@ router.get('/getOrderList', function(req, res, next) {
     var DATE =  new Date().getFullYear() + "-" + ((new Date().getMonth()+1)<10? ("0"+(new Date().getMonth()+1)) : new Date().getMonth()+1) + "-" + (new Date().getDate()<10? ("0"+new Date().getDate()):new Date().getDate());
 
     var options = {
-        uri: 'http://b.keruyun.com/mind/tradeManage/queryList?orderDateType=1&pageSize=100&startDate='+
+        uri: 'http://b.keruyun.com/mind/tradeManage/queryList?orderDateType=1&pageSize=1000&startDate='+
              (req.query.fromDate||DATE) +'&endDate='+ (req.query.toDate||DATE),
         method: 'get',
         encoding:'utf8',
