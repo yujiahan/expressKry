@@ -44,12 +44,12 @@ var orderList = new Vue({
         dishSorted: []
     },
     methods: {
-        dishMaking: function(dish, order){
-            if(!dish.arranged){
-                dish.arranged = true;
-                message.$emit("dishToChef", {dish:dish, chefId: 1})
-            }
-        }
+     /*       dishMaking: function(dish, order){
+                if(!dish.arranged){
+                    dish.arranged = true;
+                    message.$emit("dishToChef", {dish:dish, chefId: 1})
+                }
+            }*/
     },
     computed: {
         allRanged : function(order){
@@ -113,6 +113,14 @@ var dishSorted = new Vue({
     methods: {
         sortAlldish:function(){
             dishSorted.dishSorted = coreMethod.sortDishes(); //依据优先级菜品排序
+        },
+        arrangeDish: function(){
+            var arrangeData =  coreMethod.arrangeDish(_.cloneDeep(chefList.$data.chefList));
+
+            arrangeData.chefArrangeList.map(function(obj){
+                message.$emit("dishToChef",obj)
+            })
+            dishSorted.dishSorted = arrangeData.newDishList;
         }
     }
 })

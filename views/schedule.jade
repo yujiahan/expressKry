@@ -15,7 +15,7 @@ html
                         span(v-if="allRanged(order)") /全部分配
                         span(v-if="allMaked(order)") 全部制作完成
                    p(v-for="dish in order.dishList")
-                        span(@click="dishMaking(dish,order)") {{dish.dishName}}
+                        span {{dish.dishName}}
                         span(v-if="dish.arranged") ／正在制作
             div#chef(v-cloak, style="float:right;width:15%")
                  div.chef(v-for="chef in chefList") {{chef.name}}
@@ -27,7 +27,9 @@ html
                 p 菜品优先级排序
                 button(@click="sortAlldish") 计算菜品优先级
                 p(v-for="dish in dishSorted")
-                    span {{dish.uniqueID}} {{dish.finalPriority}}
+                    span {{dish.uniqueID}} {{dish.finalPriority}} {{dish.status}}
+                p 分配菜品
+                    button(@click="arrangeDish") 分配菜品
 
 
 
