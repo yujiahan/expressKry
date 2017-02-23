@@ -1,6 +1,7 @@
 var dishStatusMap = {
     "NEW" : "未分配",
     "ARRANGED": "已分配",
+    "ALLOCATED": "已经配菜",
     "MAKING": "制作中",
     "MAKED": "完成",
     "CANCELED": "被取消"
@@ -19,7 +20,8 @@ var dishProp  = {
     "priortyCalInfo":{}, //优先级计算缓存信息
     "waitTime": 0, //用户已等待时长 单位:分钟
     "waitTimeTilllastDone" : 0, //距离上一个菜完成时间
-    "chefList" : ['zhou','luo'] //优先分配厨师序列
+    "chefList" : ['zhou','luo'], //优先分配厨师序列
+    "arrangedChef" :""//当前所属厨师
 }
 
 var orderProp  = {
