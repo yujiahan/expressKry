@@ -26,9 +26,9 @@ refreshData();
 function refreshData (){
     document.body.innerHTML =""
 
-    var DATE =  new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-" + new Date().getDate();
+    var DATE =  new Date().getFullYear() + "-" + ((new Date().getMonth()+1)<10? ("0"+(new Date().getMonth()+1)) : new Date().getMonth()+1) + "-" + (new Date().getDate()<10? ("0"+new Date().getDate()):new Date().getDate());
 
-    $.post('/mind/tradeManage/queryList', "nameOrMobile=&orderDateType=1&startDate=2017-02-22&endDate=2017-02-22&cmIds=810006136&commercialIds=810006136&multipleCheck-check-all=on&multipleCheck-item=-20&multipleCheck-item=-15&multipleCheck-item=-2&multipleCheck-item=-3&multipleCheck-item=-4&multipleCheck-item=-1&multipleCheck-item=-7&multipleCheck-item=-6&multipleCheck-item=-5&multipleCheck-item=567304&payType=-20%2C-15%2C-2%2C-3%2C-4%2C-1%2C-7%2C-6%2C-5%2C567304&deliveryType=4&deliveryType=1&deliveryType=2&deliveryType=3&sourceChild=&tradeStatus=&currentPage=1&pageSize=100&sort=2" ,function(result) {
+    $.post('/mind/tradeManage/queryList', "nameOrMobile=&orderDateType=1&startDate="+DATE+"&endDate="+DATE+"&cmIds=810006136&commercialIds=810006136&multipleCheck-check-all=on&multipleCheck-item=-20&multipleCheck-item=-15&multipleCheck-item=-2&multipleCheck-item=-3&multipleCheck-item=-4&multipleCheck-item=-1&multipleCheck-item=-7&multipleCheck-item=-6&multipleCheck-item=-5&multipleCheck-item=567304&payType=-20%2C-15%2C-2%2C-3%2C-4%2C-1%2C-7%2C-6%2C-5%2C567304&deliveryType=4&deliveryType=1&deliveryType=2&deliveryType=3&sourceChild=&tradeStatus=&currentPage=1&pageSize=100&sort=2" ,function(result) {
 
         var orderList = result.data.items;
 
