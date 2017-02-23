@@ -28,11 +28,40 @@ router.get('/getOrderList', function(req, res, next) {
     var DATE =  new Date().getFullYear() + "-" + ((new Date().getMonth()+1)<10? ("0"+(new Date().getMonth()+1)) : new Date().getMonth()+1) + "-" + (new Date().getDate()<10? ("0"+new Date().getDate()):new Date().getDate());
 
     var options = {
-        uri: 'http://b.keruyun.com/mind/tradeManage/queryList?orderDateType=1&pageSize=1000&startDate='+
-             (req.query.fromDate||DATE) +'&endDate='+ (req.query.toDate||DATE),
-        method: 'get',
+        uri: 'http://b.keruyun.com/mind/tradeManage/queryList',
+        method: 'post',
         encoding:'utf8',
-        jar: loginJar
+        jar: loginJar,
+        form: {
+            nameOrMobile:"",
+            orderDateType:1,
+            startDate:DATE,
+            endDate:DATE,
+            cmIds:810006136,
+            commercialIds:810006136,
+            "multipleCheck-check-all": "on",
+            "multipleCheck-item":-20,
+            "multipleCheck-item":-15,
+            "multipleCheck-item":-2,
+            "multipleCheck-item":-3,
+            "multipleCheck-item":-4,
+            "multipleCheck-item":-1,
+            "multipleCheck-item":-7,
+            "multipleCheck-item":-6,
+            "multipleCheck-item":-5,
+            "multipleCheck-item":567304,
+            payType: "-20,-15,-2,-3,-4,-1,-7,-6,-5,567304",
+            deliveryType:4,
+            deliveryType:1,
+            deliveryType:2,
+            deliveryType:3,
+            deliveryType:15,
+            sourceChild:"",
+            tradeStatus:"",
+            currentPage:1,
+            pageSize:1000,
+            sort:2
+        }
     };
 
 
