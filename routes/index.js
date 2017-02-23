@@ -59,7 +59,7 @@ router.get('/getOrderList', function(req, res, next) {
             sourceChild:"",
             tradeStatus:"",
             currentPage:1,
-            pageSize:1000,
+            pageSize:50,
             sort:2
         }
     };
