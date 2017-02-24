@@ -35,8 +35,8 @@ router.get('/getOrderList', function(req, res, next) {
         form: {
             nameOrMobile:"",
             orderDateType:1,
-            startDate:DATE,
-            endDate:DATE,
+            startDate: req.query.fromDate||DATE,
+            endDate:req.query.toDate||DATE,
             cmIds:810006136,
             commercialIds:810006136,
             sourceChild:"",
