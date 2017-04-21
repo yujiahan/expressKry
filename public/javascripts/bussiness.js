@@ -32,7 +32,7 @@ $(function(){
     })
 
     $.get("/getAvgPersonToday", function(result){
-        $("#general").find(".js-avgPerson").text(result.customerUnitPrice);
+        $("#general").find(".js-avgPerson").text(result.data.customerUnitPrice);
     })
 
 })
