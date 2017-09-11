@@ -1,0 +1,15 @@
+doctype html
+html
+    head
+        title= title
+    body
+        div
+            input#testData(placeholder="测试数据")
+            input#runMultiple(placeholder="展示速率(倍数)")
+            button(@click="startTest") 开始
+            button(@click="endTest") 暂停
+
+
+    script(src="https://unpkg.com/vue/dist/vue.js")
+    script(src="dist/forDisplay.js")
+

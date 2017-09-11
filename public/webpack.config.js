@@ -1,7 +1,10 @@
 module.exports = {
-    entry: './javascripts/schedule/main.js',
+    entry: {
+        "schedule": './javascripts/schedule/index.js',
+        "forDisplay": "./javascripts/forDisplay/index.js"
+    },
     output: {
-        filename: 'schedule.js',
+        filename: '[name].js',
         path: './dist'
     }
 }

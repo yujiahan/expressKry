@@ -66,7 +66,7 @@ $(function(){
            distributeInit(); //初始化数组
            if(!result || xhr.getResponseHeader("Content-Type") == "text/html;charset=UTF-8"){
 
-               $("#result").html($(result).find("#loginForm").html());
+               $("#result").html($(result).find("#credential").html());
                $("#result").find("#username").val("xxxxx");
                $("#result").find("#loginId").val("xxxxx");
                $("#result").find("#password").val("xxxxx");

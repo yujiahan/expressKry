@@ -46,8 +46,8 @@
 
 	var STRUCTURE = __webpack_require__(1).initStructure;
 	var coreMethod = __webpack_require__(2)
-
 	var _ = __webpack_require__(3);
+
 	var testOrderData = [
 	    {
 	        dishList:[
@@ -90,12 +90,12 @@
 	        dishSorted: []
 	    },
 	    methods: {
-	        dishMaking: function(dish, order){
-	            if(!dish.arranged){
-	                dish.arranged = true;
-	                message.$emit("dishToChef", {dish:dish, chefId: 1})
-	            }
-	        }
+	     /*       dishMaking: function(dish, order){
+	                if(!dish.arranged){
+	                    dish.arranged = true;
+	                    message.$emit("dishToChef", {dish:dish, chefId: 1})
+	                }
+	            }*/
 	    },
 	    computed: {
 	        allRanged : function(order){
@@ -222,6 +222,7 @@
 	var dishStatusMap = {
 	    "NEW" : "未分配",
 	    "ARRANGED": "已分配",
+	    "ALLOCATED": "已经配菜",
 	    "MAKING": "制作中",
 	    "MAKED": "完成",
 	    "CANCELED": "被取消"
@@ -240,7 +241,8 @@
 	    "priortyCalInfo":{}, //优先级计算缓存信息
 	    "waitTime": 0, //用户已等待时长 单位:分钟
 	    "waitTimeTilllastDone" : 0, //距离上一个菜完成时间
-	    "chefList" : ['zhou','luo'] //优先分配厨师序列
+	    "chefList" : ['zhou','luo'], //优先分配厨师序列
+	    "arrangedChef" :""//当前所属厨师
 	}
 
 	var orderProp  = {
@@ -268,7 +270,7 @@
 	/**
 	 * 排序规则1 等待时间n分钟 优先权+n  大于10分钟 额外加20  大于20分钟 额外再加30
 	 * 排序规则2 这道菜如果所属订单一个菜没上 并且在订单中优先级中最高的菜是这个道菜 优先级+10
-	 * 排序规则3 用户催菜规则
+	 * 排序规则3 用户催菜规则 订单被催
 	 *
 	 */
 
@@ -329,9 +331,6 @@
 	        }
 	        dish.waitTime = parseInt((NOW - new Date(dish.createTime).getTime())/60000);
 	    })
-
-
-
 	}
 	function updateCommonOrderProp(data){  //处理每个订单中的菜list 每项菜和tableInfo绑定生成uniqueId
 	    var orderData = [];
@@ -360,9 +359,11 @@
 
 	function sortDishes(){
 	    updateCommonDishProp(allDishList);
+
+	    //规则开始
 	    waitTimeRule(dishUnarrangeList);
 	    noneDishMakeRule(dishUnarrangeList);
-
+	    //规则结束
 
 	    _computeFinalPriory(dishUnarrangeList); //计算最终优先级
 
@@ -402,6 +403,7 @@
 	    var CHEFLISTLONGEST = 5; //厨师队列超长阈值
 	    var chefId = "";
 	    var findChef = false;
+
 	    //如果厨师队列有这道菜,加到当前厨师队列中
 	    chefList.map(function(chef, idx){
 	        if(_.findIndex(chef.makingList, ["dishName", dishName]) > -1){

@@ -1,6 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var request = require('request');
+var sqlConfig = require('./password.json').sqlConfig;
+var mysql  = require('mysql');
+
+
+
 require('events').EventEmitter.prototype._maxListeners = 100;
 
 /* GET home page. */
@@ -18,6 +23,51 @@ router.get('/chart', function(req, res, next) {
 });
 router.get('/schedule', function(req, res, next) {
     res.render('schedule');
+});
+router.get('/forDisplay', function(req, res, next) {
+    res.render('forDisplay', { title: '实验运行效果' });
+});
+
+router.get('/dishType/submit', function(req, res, next) {
+    var dishName = req.query.name;
+    var remarks = req.query.remarks;
+
+    var connection = mysql.createConnection(sqlConfig);
+    connection.connect();
+    connection.query('INSERT INTO dish_types (name, remarks) VALUES ("'+ dishName+'" , "'+remarks +'");', function (error, results, fields) {
+        if (error) {
+            var errMsg = "";
+
+            switch (error.code){
+                case "ER_DUP_ENTRY":
+                    errMsg = "重复名称"
+                    break;
+                default:
+                    errMsg = "未知错误"
+            }
+
+            res.json({res:false, errMsg: errMsg});
+        } else {
+            res.json({ret: true});
+        }
+        // connected!
+
+    });
+    connection.end();
+
+});
+router.get('/dishType/query', function(req, res, next) {
+    var connection = mysql.createConnection(sqlConfig);
+    connection.connect();
+    connection.query('select * from dish_types', function (error, results, fields) {
+        if (error) throw error;
+        if(results) {
+            console.log(JSON.stringify(results));
+        }
+        // connected!
+        res.json(results);
+    });
+    connection.end();
 });
 
 var loginJar = request.jar(); //用于登录的jar
@@ -144,7 +194,7 @@ function _queryPeriodData(type, resolve, reject){
 
     request.get(
         {
-            'uri': "http://b.keruyun.com/mind/report/collection/query?startDate="+ STARTDATE +"&endDate="+ ENDDATE +"&commercialId=810006136&shopName=%2525E6%2525A4%252592%2525E5%2525A1%252598&type=1",
+            'uri': "http://b.keruyun.com/mind/report/businessOverview/getSumInfoAndSaleInfo?startDate="+ STARTDATE +"&endDate="+ ENDDATE +"&shopIds=810006136&queryType=2&startTime=0:00&endTime=23:59",
             'jar': j
         }, function(err, httpResponse, body){
             if(body && body.indexOf("script") < 0) {

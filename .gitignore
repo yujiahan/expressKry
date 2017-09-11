@@ -6,7 +6,7 @@
 
 #password ignore
 
-routes/password.js
+routes/password.json
 npm-debug.log
 .idea/workspace.xml
 .idea/misc.xml
