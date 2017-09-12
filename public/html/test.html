@@ -1,10 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html>
+<head><title></title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="/stylesheets/materialize.css">
 </head>
 <body>
-
+<div>
+    <div id="addDish" v-cloak>
+        <div class="grid-item">
+            <p>增加菜品</p>
+            <input type="text" placeholder="食材名称" v-model="param.name"/>
+            <input type="text" placeholder="备注" v-model="param.remarks"/>
+            <button class="waves-effect waves-light btn" @click=addDish >提交</button>
+        </div>
+        <div>
+            <p v-for="dish in currentDish">已有菜品
+                 {{dish.name}}
+                 {{dish.remarks}}
+            </p>
+        </div>
+    </div>
+</div>
 </body>
+<script src="/javascripts/lib/jquery.js"></script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="/javascripts/addDish.js"></script>
 </html>

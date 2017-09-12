@@ -1,7 +1,7 @@
 var STRUCTURE = require("./baseStruct.js").initStructure;
 var coreMethod = require("./sortRule.js")
-
 var _ = require("lodash");
+
 var testOrderData = [
     {
         dishList:[

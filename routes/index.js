@@ -120,7 +120,13 @@ router.post('/doLogin', function(req, res, next) {
     },
     form : req.body,
     jar: loginJar
-  }).pipe(res);
+  }).on("response",function(response){
+      if(response.statusCode === 302){
+          res.redirect(req.headers.origin+'/bussiness');
+      } else {
+          res.end();
+      }
+  })
 })
 router.get('/captcha.jpg', function(req, res, next) {
   request.get(
@@ -140,13 +146,10 @@ router.get('/loadTotal', function(req, res, next) {
       }).pipe(res);
 })
 router.get('/getAvgPersonToday', function(req, res, next) {
-    //console.log(loginJar.getCookies("http://b.keruyun.com/mind"));
-    var j = request.jar();
-    j.setCookie(loginJar.getCookieString("http://b.keruyun.com/mind"), "http://b.keruyun.com/mind");
     request.get(
         {
             'uri': "http://b.keruyun.com/mind/report/homePage/loadSalesCountChart",
-            'jar': j
+            'jar': loginJar
         }).pipe(res);
 })
 
@@ -173,7 +176,6 @@ router.get('/loadPeriodTotal', function(req, res, next) {
 function _queryPeriodData(type, resolve, reject){
     var ENDDATE;
     var STARTDATE ;
-    var j = request.jar();
 
     if(type === "thisWeek") {
         var week = new Date().getDay() === 0? 7 :  new Date().getDay()
@@ -190,15 +192,14 @@ function _queryPeriodData(type, resolve, reject){
         STARTDATE = new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-01";
         ENDDATE = new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-" + new Date().getDate();
     }
-    j.setCookie(loginJar.getCookieString("http://b.keruyun.com/mind"), "http://b.keruyun.com/mind");
 
     request.get(
         {
             'uri': "http://b.keruyun.com/mind/report/businessOverview/getSumInfoAndSaleInfo?startDate="+ STARTDATE +"&endDate="+ ENDDATE +"&shopIds=810006136&queryType=2&startTime=0:00&endTime=23:59",
-            'jar': j
+            'jar': loginJar
         }, function(err, httpResponse, body){
             if(body && body.indexOf("script") < 0) {
-                resolve(JSON.parse(body)  && JSON.parse(body).income)
+                resolve(JSON.parse(body)  && JSON.parse(body).data && JSON.parse(body).data.saleViewInfo && JSON.parse(body).data.saleViewInfo.saleTotal)
             } else {
                 resolve("error")
             }
