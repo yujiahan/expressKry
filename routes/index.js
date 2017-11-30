@@ -106,8 +106,11 @@ router.get('/getOrderList', function(req, res, next) {
                 method: 'get'
             }
             request(optionNew).pipe(res);
-       }       
-    }).pipe(res);
+       } else {
+           res.json(response);
+       }
+       
+    })
 });
 
 router.post('/doLogin', function(req, res, next) {
