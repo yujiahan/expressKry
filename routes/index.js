@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var request = require('request');
-var sqlConfig = require('./password.json').sqlConfig;
+//var sqlConfig = require('./password.json').sqlConfig;
 var mysql  = require('mysql');
 
 
@@ -99,14 +99,23 @@ router.get('/getOrderList', function(req, res, next) {
 
 
     request(options).on("response", function(response){
-       console.log("====================");
-       console.log(response.request.req._header);
-    }).pipe(res);
+        if(response.headers['content-type'] === 'text/html;charset=UTF-8'){
+            var optionNew = {
+                uri: 'http://sso.keruyun.com/cas/login?loginId=7364&service=http://b.keruyun.com/cas',
+                jar: loginJar,
+                method: 'get'
+            }
+            request(optionNew).pipe(res);
+       } else {
+           req.pipe(res);
+       }
+       
+    })
 });
 
 router.post('/doLogin', function(req, res, next) {
   request.post({
-    uri:'http://sso.keruyun.com/cas/login?service=http://b.keruyun.com/cas',
+    uri:'http://sso.keruyun.com/cas/login?loginId=7364&service=http://b.keruyun.com/cas',
     headers: {
       "Connection": "keep-alive",
       "Cache-Control": "max-age=0",
