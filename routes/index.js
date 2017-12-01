@@ -97,8 +97,7 @@ router.get('/getOrderList', function(req, res, next) {
         }
     };
 
-
-    request(options).on("response", function(response){
+    request(options,  function (error, response, body) {
         if(response.headers['content-type'] === 'text/html;charset=UTF-8'){
             var optionNew = {
                 uri: 'http://sso.keruyun.com/cas/login?loginId=7364&service=http://b.keruyun.com/cas',
@@ -107,9 +106,8 @@ router.get('/getOrderList', function(req, res, next) {
             }
             request(optionNew).pipe(res);
        } else {
-           res.json(response);
+           res.json(JSON.parse(body));
        }
-       
     })
 });
 
