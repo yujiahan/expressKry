@@ -174,9 +174,9 @@ router.get('/loadPeriodTotal', function(req, res, next) {
 
     Promise.all([thisWeekPromise, lastWeekPromise, thisMonthPromis]).then(function(data){
         res.send({
-            thisWeek : data[0],
-            lastWeek: data[1],
-            thisMonth: data[2]
+            thisWeek : data[0].shopActaualAmount,
+            lastWeek: data[1].shopActaualAmount,
+            thisMonth: data[2].shopActaualAmount
         })
     })
 })
