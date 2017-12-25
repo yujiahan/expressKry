@@ -202,7 +202,7 @@ function _queryPeriodData(type, resolve, reject){
 
     request.get(
         {
-            'uri': "http://b.keruyun.com/mind/report/businessOverview/getSumInfoAndSaleInfo?startDate="+ STARTDATE +"&endDate="+ ENDDATE +"&shopIds=810006136&queryType=2&startTime=0:00&endTime=23:59",
+            'uri': "http://b.keruyun.com/mind/report/collection/query?startDate="+ STARTDATE +"&endDate="+ ENDDATE +"&shopIds=810006136&shopName=%2525E6%2525A4%252592%2525E5%2525A1%252598&tabType=1&queryType=2&dateType=2&startTime=00%3A00&endTime=23%3A59",
             'jar': loginJar
         }, function(err, httpResponse, body){
             if(body && body.indexOf("script") < 0) {
