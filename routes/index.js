@@ -174,9 +174,9 @@ router.get('/loadPeriodTotal', function(req, res, next) {
 
     Promise.all([thisWeekPromise, lastWeekPromise, thisMonthPromis]).then(function(data){
         res.send({
-            thisWeek : data[0].shopActaualAmount,
-            lastWeek: data[1].shopActaualAmount,
-            thisMonth: data[2].shopActaualAmount
+            thisWeek : data[0],
+            lastWeek: data[1],
+            thisMonth: data[2]
         })
     })
 })
@@ -206,7 +206,7 @@ function _queryPeriodData(type, resolve, reject){
             'jar': loginJar
         }, function(err, httpResponse, body){
             if(body && body.indexOf("script") < 0) {
-                resolve(JSON.parse(body)  && JSON.parse(body).data && JSON.parse(body).data.saleViewInfo && JSON.parse(body).data.saleViewInfo.saleTotal)
+                resolve(JSON.parse(body)  && JSON.parse(body).shopActaualAmount)
             } else {
                 resolve("error")
             }
