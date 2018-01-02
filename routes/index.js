@@ -129,7 +129,8 @@ router.post('/doLogin', function(req, res, next) {
     jar: loginJar
   }).on("response",function(response){
       if(response.statusCode === 302){
-          res.redirect(req.headers.origin+'/bussiness');
+        res.redirect(req.headers.origin+'/bussiness');
+            //response.pipe(res);
       } else {
           res.end();
       }
@@ -187,19 +188,18 @@ function _queryPeriodData(type, resolve, reject){
     if(type === "thisWeek") {
         var week = new Date().getDay() === 0? 7 :  new Date().getDay()
         var weekStart = new Date(new Date().getTime() - 24*3600*1000* (week-1));
-        STARTDATE = weekStart.getFullYear() + "-" + (weekStart.getMonth()+1) + "-" + weekStart.getDate();
-        ENDDATE = new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-" + new Date().getDate();
+        STARTDATE = weekStart.getFullYear() + "-" + (weekStart.getMonth()+1<10 ? "0"+ (weekStart.getMonth()+1) : weekStart.getMonth()+1) + "-" + (weekStart.getDate()<10 ? "0"+ weekStart.getDate(): weekStart.getDate());
+        ENDDATE = new Date().getFullYear() + "-" + (new Date().getMonth()+1 <10? "0"+ (new Date().getMonth()+1): new Date().getMonth()+1 ) + "-" + (new Date().getDate()<10? "0"+ new Date().getDate(): new Date().getDate());
     } else if(type === "lastWeek"){
         var week = new Date().getDay() === 0? 7 :  new Date().getDay();
         var weekStart = new Date(new Date().getTime() - 24*3600*1000* (week + 6));
         var weekEnd = new Date(new Date().getTime() - 24*3600*1000*7);
-        STARTDATE = weekStart.getFullYear() + "-" + (weekStart.getMonth()+1) + "-" + weekStart.getDate();
-        ENDDATE = weekEnd.getFullYear() + "-" + (weekEnd.getMonth()+1) + "-" + weekEnd.getDate();
+        STARTDATE = weekStart.getFullYear() + "-" + (weekStart.getMonth()+1 < 10 ? "0"+ (weekStart.getMonth()+1) :weekStart.getMonth()+1) + "-" + (weekStart.getDate()<10? "0"+weekStart.getDate():weekStart.getDate());
+        ENDDATE = weekEnd.getFullYear() + "-" + (weekEnd.getMonth()+1 < 10? "0"+(weekEnd.getMonth()+1): weekEnd.getMonth()+1 ) + "-" + (weekEnd.getDate()<10? weekEnd.getDate()+"0" :weekEnd.getDate());
     } else if(type === "thisMonth"){
-        STARTDATE = new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-01";
-        ENDDATE = new Date().getFullYear() + "-" + (new Date().getMonth()+1) + "-" + new Date().getDate();
+        STARTDATE = new Date().getFullYear() + "-" + (new Date().getMonth()+1 < 10? "0"+ (new Date().getMonth()+1) : new Date().getMonth()+1) + "-01";
+        ENDDATE = new Date().getFullYear() + "-" + (new Date().getMonth()+1 < 10? "0"+ (new Date().getMonth()+1) : new Date().getMonth()+1) + "-" + (new Date().getDate()<10? "0"+new Date().getDate() :new Date().getDate());
     }
-
     request.get(
         {
             'uri': "http://b.keruyun.com/mind/report/collection/query?startDate="+ STARTDATE +"&endDate="+ ENDDATE +"&shopIds=810006136&shopName=%2525E6%2525A4%252592%2525E5%2525A1%252598&tabType=1&queryType=2&dateType=2&startTime=00%3A00&endTime=23%3A59",
