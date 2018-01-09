@@ -195,7 +195,7 @@ function _queryPeriodData(type, resolve, reject){
         var weekStart = new Date(new Date().getTime() - 24*3600*1000* (week + 6));
         var weekEnd = new Date(new Date().getTime() - 24*3600*1000*7);
         STARTDATE = weekStart.getFullYear() + "-" + (weekStart.getMonth()+1 < 10 ? "0"+ (weekStart.getMonth()+1) :weekStart.getMonth()+1) + "-" + (weekStart.getDate()<10? "0"+weekStart.getDate():weekStart.getDate());
-        ENDDATE = weekEnd.getFullYear() + "-" + (weekEnd.getMonth()+1 < 10? "0"+(weekEnd.getMonth()+1): weekEnd.getMonth()+1 ) + "-" + (weekEnd.getDate()<10? weekEnd.getDate()+"0" :weekEnd.getDate());
+        ENDDATE = weekEnd.getFullYear() + "-" + (weekEnd.getMonth()+1 < 10? "0"+(weekEnd.getMonth()+1): weekEnd.getMonth()+1 ) + "-" + (weekEnd.getDate()<10? "0"+ weekEnd.getDate() :weekEnd.getDate());
     } else if(type === "thisMonth"){
         STARTDATE = new Date().getFullYear() + "-" + (new Date().getMonth()+1 < 10? "0"+ (new Date().getMonth()+1) : new Date().getMonth()+1) + "-01";
         ENDDATE = new Date().getFullYear() + "-" + (new Date().getMonth()+1 < 10? "0"+ (new Date().getMonth()+1) : new Date().getMonth()+1) + "-" + (new Date().getDate()<10? "0"+new Date().getDate() :new Date().getDate());
