@@ -205,8 +205,11 @@ function _queryPeriodData(type, resolve, reject){
             'uri': "http://b.keruyun.com/mind/report/collection/query?startDate="+ STARTDATE +"&endDate="+ ENDDATE +"&shopIds=810006136&shopName=%2525E6%2525A4%252592%2525E5%2525A1%252598&tabType=1&queryType=2&dateType=2&startTime=00%3A00&endTime=23%3A59",
             'jar': loginJar
         }, function(err, httpResponse, body){
-            if(body && body.indexOf("script") < 0) {
-                resolve(JSON.parse(body)  && JSON.parse(body).shopActaualAmount)
+            if((body && body.indexOf("script") < 0) && httpResponse.headers['content-type']!=='text/html;charset=UTF-8') {
+                try{
+                    var responseData = JSON.parse(body)  && JSON.parse(body).shopActaualAmount;
+                } catch(e){}
+                resolve(responseData)
             } else {
                 resolve("error")
             }
